@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+import React, { StrictMode, Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -10,19 +10,21 @@ import Error from "./componenet/Error";
 import Body from "./componenet/Body";
 import RestaurantMenu from "./componenet/RestaurantMenu";
 
-
+// import Grocery from "./componenet/Grocery";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const Grocery = lazy(()=>import("./componenet/Grocery"))
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <Error/>,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
-        element: <Body/>,
+        element: <Body />,
       },
       {
         path: "/about",
@@ -33,6 +35,10 @@ const appRouter = createBrowserRouter([
         element: <Contact />,
       },
       {
+        path: "/grocery",
+        element: (<Suspense fallback={"Loading..."}><Grocery /></Suspense>),
+      },
+      {
         path: "/restaurants/:resId",
         element: <RestaurantMenu />,
       },
@@ -41,8 +47,8 @@ const appRouter = createBrowserRouter([
 ]);
 root.render(
   <StrictMode>
- <RouterProvider router={appRouter}/>
- </StrictMode>
+    <RouterProvider router={appRouter} />
+  </StrictMode>
 );
 
 reportWebVitals();

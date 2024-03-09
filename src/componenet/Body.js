@@ -3,10 +3,12 @@ import ResCard from "../Rescard";
 import { useEffect, useState } from "react";
 import Simmers from "./simmers";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../Utils/useOnlineStatus";
 const Body = () => {
   let [reslist, setlist] = useState([]);
   let [filterlist, setfilterlist] = useState([""]);
   let [searchtext, setsearchtext] = useState("");
+  const onlineStatus = useOnlineStatus();
   console.log("render the body every time");
   useEffect(() => {
     fetchData();
@@ -26,12 +28,14 @@ const Body = () => {
       json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
-if(!reslist || reslist.length ===0)
+  if (!reslist || reslist.length === 0) {
+    return <Simmers />;
+  }
+if(onlineStatus === false)
 {
-return <Simmers/> ;
-
+  return <h1>opppss!! we are unable to connect you !! please check your internet connection</h1>
 }
-return (
+  return (
     <div className="body">
       <div className="filter">
         <div className="serach-resturant">
@@ -62,7 +66,7 @@ return (
           className="filter-btn"
           onClick={() => {
             reslist = reslist.filter((res) => res.info.avgRating > 4.4);
-            
+
             setfilterlist(reslist);
           }}
         >
@@ -71,10 +75,12 @@ return (
       </div>
       <div className="rescontainer">
         {filterlist.map((resturant) => (
-          <Link key={resturant.info.id} to={"/restaurants/"+resturant.info.id}>
-            <ResCard  resdata={resturant} />
+          <Link
+            key={resturant.info.id}
+            to={"/restaurants/" + resturant.info.id}
+          >
+            <ResCard resdata={resturant} />
           </Link>
-        
         ))}
       </div>
     </div>

@@ -1,32 +1,21 @@
-import { useEffect, useState } from "react";
-import { MENU_API } from "../Utils/Constant";
 import Simmers from "./simmers";
 import { useParams } from "react-router-dom";
+import useRestaurantMenu from "../Utils/useRestaurantMenu";
 // import { json } from "react-router-dom";
 const RestaurantMenu = () => {
-  const [menuinfo, setmenuinfo] = useState(null);
+  // const [menuinfo, setmenuinfo] = useState(null);
   const { resId } = useParams();
-
-  useEffect(() => {
-    fetchMenu();
-  });
-
-  const fetchMenu = async () => {
-    const data = await fetch(MENU_API + resId);
-    const json = await data.json();
-    
-
-    setmenuinfo(json.data);
-  };
+  const menuinfo = useRestaurantMenu(resId);
 
   if (menuinfo === null) {
-    return <Simmers />
+    return <Simmers />;
   }
-  
-  const { name, costForTwo, cuisines } = menuinfo.cards[2]?.card?.card?.info;
 
+  const { name, costForTwo, cuisines } = menuinfo.cards[0]?.card?.card?.info;
 
-  const { itemCards } = menuinfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card;
+  const { itemCards } =
+    menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[5]?.card
+      ?.card;
 
   return (
     <div className="Menu">
@@ -36,11 +25,12 @@ const RestaurantMenu = () => {
       </p>
 
       <ul>
-        {itemCards && itemCards.map((list) => (
-          <li key={list.card.info.id}>
-            {list.card.info.name} -Rs. {list.card.info.price / 100}{" "}
-          </li>
-        ))}
+        {itemCards &&
+          itemCards.map((list) => (
+            <li key={list.card.info.id}>
+              {list.card.info.name} -Rs. {list.card.info.price / 100}{" "}
+            </li>
+          ))}
       </ul>
     </div>
   );
