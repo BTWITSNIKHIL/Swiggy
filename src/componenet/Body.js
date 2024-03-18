@@ -1,6 +1,6 @@
-import ResCard from "../Rescard";
+import ResCard, { withpromotedRestuarant } from "../Rescard";
 // import { resObj } from "../Utils/Mockdata";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import Simmers from "./simmers";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../Utils/useOnlineStatus";
@@ -9,7 +9,7 @@ const Body = () => {
   let [filterlist, setfilterlist] = useState([""]);
   let [searchtext, setsearchtext] = useState("");
   const onlineStatus = useOnlineStatus();
-  console.log("render the body every time");
+  const PromotedRestuarant = withpromotedRestuarant(ResCard);
   useEffect(() => {
     fetchData();
   }, []);
@@ -31,15 +31,21 @@ const Body = () => {
   if (!reslist || reslist.length === 0) {
     return <Simmers />;
   }
-if(onlineStatus === false)
-{
-  return <h1>opppss!! we are unable to connect you !! please check your internet connection</h1>
-}
+
+  if (onlineStatus === false) {
+    return (
+      <h1>
+        opppss!! we are unable to connect you !! please check your internet
+        connection
+      </h1>
+    );
+  }
   return (
     <div className="body">
-      <div className="filter">
-        <div className="serach-resturant">
+      <div className="filter flex items-center">
+        <div className="serach-resturant m-4 p-4">
           <input
+            className="border border-solid border-black"
             type="text"
             value={searchtext}
             onChange={(e) => {
@@ -47,6 +53,7 @@ if(onlineStatus === false)
             }}
           />
           <button
+            className=" border-solid border-black bg-green-300 mx-2 px-3  rounded-lg "
             onClick={() => {
               const filteresturant = reslist.filter(
                 (res) =>
@@ -62,24 +69,30 @@ if(onlineStatus === false)
             search
           </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            reslist = reslist.filter((res) => res.info.avgRating > 4.4);
+        <div>
+          <button
+            className="filter-btn border-solid border-black px-2 mr-2 bg-gray-400 rounded-sm"
+            onClick={() => {
+              reslist = reslist.filter((res) => res.info.avgRating > 4.4);
 
-            setfilterlist(reslist);
-          }}
-        >
-          Top rated resturant
-        </button>
+              setfilterlist(reslist);
+            }}
+          >
+            Top rated resturant
+          </button>
+        </div>
       </div>
-      <div className="rescontainer">
+      <div className="rescontainer flex flex-wrap ">
         {filterlist.map((resturant) => (
           <Link
             key={resturant.info.id}
             to={"/restaurants/" + resturant.info.id}
           >
-            <ResCard resdata={resturant} />
+            {resturant.info.promoted ? (
+              <PromotedRestuarant resdata={resturant} />
+            ) : (
+              <ResCard resdata={resturant} />
+            )}
           </Link>
         ))}
       </div>

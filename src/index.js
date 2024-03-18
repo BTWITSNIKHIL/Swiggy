@@ -9,6 +9,7 @@ import Contact from "./componenet/Contactus";
 import Error from "./componenet/Error";
 import Body from "./componenet/Body";
 import RestaurantMenu from "./componenet/RestaurantMenu";
+import Cart from "./componenet/Cart";
 
 // import Grocery from "./componenet/Grocery";
 
@@ -41,6 +42,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/restaurants/:resId",
         element: <RestaurantMenu />,
+      },
+      {
+        path: "/cart",
+        element: <Cart/>,
       },
     ],
   },

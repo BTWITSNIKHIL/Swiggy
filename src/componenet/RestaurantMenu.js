@@ -1,9 +1,11 @@
 import Simmers from "./simmers";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../Utils/useRestaurantMenu";
+import RestaurantCategories from "./RestaurantCategories";
+import { useState } from "react";
 // import { json } from "react-router-dom";
 const RestaurantMenu = () => {
-  // const [menuinfo, setmenuinfo] = useState(null);
+  const [showitem, setshowitem] = useState(null);
   const { resId } = useParams();
   const menuinfo = useRestaurantMenu(resId);
 
@@ -13,25 +15,40 @@ const RestaurantMenu = () => {
 
   const { name, costForTwo, cuisines } = menuinfo.cards[0]?.card?.card?.info;
 
-  const { itemCards } =
-    menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[5]?.card
-      ?.card;
+  // const { itemCards } =
+  //   menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[5]?.card
+  //     ?.card;
+
+  const Categories =
+    menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (c) =>
+        c.card?.["card"]?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
 
   return (
-    <div className="Menu">
-      <h1>{name}</h1>
-      <p>
-        {cuisines.join(" , ")} - Rs. {costForTwo / 100}
+    <div className="Menu text-center ">
+      <h1 className="font-bold my-4 text-2xl">{name}</h1>
+      <p className="font-bold">
+        {cuisines.join(" , ")} - Rs. {costForTwo / 100} For two
       </p>
-
-      <ul>
+      {/* {Accomodation} */}
+      {Categories.map((category, index) => (
+        <RestaurantCategories
+          key={category?.card?.card.title}
+          data={category?.card?.card}
+          showitem={index === showitem ? true : false}
+          setshowitem={() => setshowitem(index)}
+        />
+      ))}
+      {/* <ul>
         {itemCards &&
           itemCards.map((list) => (
             <li key={list.card.info.id}>
               {list.card.info.name} -Rs. {list.card.info.price / 100}{" "}
             </li>
           ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
