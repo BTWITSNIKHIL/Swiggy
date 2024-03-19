@@ -2,10 +2,11 @@ import Simmers from "./simmers";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../Utils/useRestaurantMenu";
 import RestaurantCategories from "./RestaurantCategories";
-import { useState } from "react";
+
 // import { json } from "react-router-dom";
 const RestaurantMenu = () => {
-  const [showitem, setshowitem] = useState(null);
+  // const [showitem, setshowitem] = useState(null);
+  
   const { resId } = useParams();
   const menuinfo = useRestaurantMenu(resId);
 
@@ -37,8 +38,8 @@ const RestaurantMenu = () => {
         <RestaurantCategories
           key={category?.card?.card.title}
           data={category?.card?.card}
-          showitem={index === showitem ? true : false}
-          setshowitem={() => setshowitem(index)}
+         
+         
         />
       ))}
       {/* <ul>
