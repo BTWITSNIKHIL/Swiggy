@@ -6,7 +6,7 @@ import RestaurantCategories from "./RestaurantCategories";
 // import { json } from "react-router-dom";
 const RestaurantMenu = () => {
   // const [showitem, setshowitem] = useState(null);
-  
+  //git tutur
   const { resId } = useParams();
   const menuinfo = useRestaurantMenu(resId);
 
