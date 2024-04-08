@@ -14,7 +14,7 @@ state.item.push(action.payload);
     {
         state.item.pop();
     },
-    ClearItem:(state,action)=>
+    ClearItem:()=>
     {
         return { item: []};
     }

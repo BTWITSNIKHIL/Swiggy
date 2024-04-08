@@ -14,14 +14,14 @@ const RestaurantMenu = () => {
     return <Simmers />;
   }
 
-  const { name, costForTwo, cuisines } = menuinfo.cards[0]?.card?.card?.info;
+  const { name, costForTwo, cuisines } = menuinfo.cards[2]?.card?.card?.info;
 
   // const { itemCards } =
   //   menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[5]?.card
   //     ?.card;
 
   const Categories =
-    menuinfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+    menuinfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
       (c) =>
         c.card?.["card"]?.["@type"] ===
         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
